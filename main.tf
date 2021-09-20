@@ -1,4 +1,3 @@
-provider "gitlab" {}
 provider "flux" {}
 provider "kubectl" {}
 provider "kubernetes" {

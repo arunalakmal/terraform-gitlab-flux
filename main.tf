@@ -16,7 +16,7 @@ data "gitlab_group" "techcrumble" {
 }
 
 data "gitlab_project" "GitOpsAdministrator" {
-  id = "techcrumble-gitops-administrator"
+  id = "25354313"
 }
 
 resource "tls_private_key" "main" {
@@ -30,7 +30,7 @@ data "flux_install" "main" {
 
 data "flux_sync" "main" {
   target_path = var.target_path
-  url         = "ssh://git@gitlab.com:techcrumble/techcrumble-gitops-administrator.git"
+  url         = "https://gitlab.com/techcrumble/techcrumble-gitops-administrator"
   branch      = var.branch
 }
 

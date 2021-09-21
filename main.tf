@@ -1,22 +1,24 @@
 provider "flux" {}
 provider "kubectl" {}
 provider "kubernetes" {
-  config_path = "~/.kube/config"
+  config_path = var.kube_config_path
 }
 provider "gitlab" {
   token = var.gitlab_token
 }
 
 locals {
-  known_hosts = "gitlab.com,172.65.251.78 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY="
+  known_hosts  = "gitlab.com,172.65.251.78 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY="
+  repo_ssh_url = "ssh://git@gitlab.com/${var.gitlab_repo_path}/${var.gitops_administrator_repo}"
+  key_title    = "${var.gitlab_repo_path}-flux-key"
 }
 
-data "gitlab_group" "techcrumble" {
-  full_path = "techcrumble"
+data "gitlab_group" "group" {
+  full_path = var.gitlab_repo_path
 }
 
-data "gitlab_project" "GitOpsAdministrator" {
-  id = "25354313"
+data "gitlab_project" "gitopsadministrator" {
+  id = var.gitlab_project_id
 }
 
 resource "tls_private_key" "main" {
@@ -30,13 +32,13 @@ data "flux_install" "main" {
 
 data "flux_sync" "main" {
   target_path = var.target_path
-  url         = "ssh://git@gitlab.com/techcrumble/techcrumble-gitops-administrator"
+  url         = local.repo_ssh_url
   branch      = var.branch
 }
 
 resource "kubernetes_namespace" "flux_system" {
   metadata {
-    name = "flux-system"
+    name = var.flux_namespace
   }
 
   lifecycle {
@@ -80,9 +82,9 @@ resource "kubectl_manifest" "sync" {
 }
 
 resource "gitlab_deploy_key" "flux_deploy_key" {
-  project   = data.gitlab_project.GitOpsAdministrator.id
-  title     = "GitOpsAdministrator-key"
-  key       = tls_private_key.main.public_key_openssh
+  project = data.gitlab_project.gitopsadministrator.id
+  title   = local.key_title
+  key     = tls_private_key.main.public_key_openssh
 }
 
 resource "kubernetes_secret" "main" {

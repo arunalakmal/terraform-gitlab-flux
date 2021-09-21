@@ -83,7 +83,6 @@ resource "gitlab_deploy_key" "flux_deploy_key" {
   project   = data.gitlab_project.GitOpsAdministrator.id
   title     = "GitOpsAdministrator-key"
   key       = tls_private_key.main.public_key_openssh
-  read_only = true
 }
 
 resource "kubernetes_secret" "main" {

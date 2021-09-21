@@ -4,7 +4,7 @@ provider "kubernetes" {
   config_path = "~/.kube/config"
 }
 provider "gitlab" {
-    token = var.gitlab_token
+  token = var.gitlab_token
 }
 
 locals {
@@ -77,6 +77,13 @@ resource "kubectl_manifest" "sync" {
   for_each   = { for v in local.sync : lower(join("/", compact([v.data.apiVersion, v.data.kind, lookup(v.data.metadata, "namespace", ""), v.data.metadata.name]))) => v.content }
   depends_on = [kubernetes_namespace.flux_system]
   yaml_body  = each.value
+}
+
+resource "gitlab_deploy_key" "flux_deploy_key" {
+  project   = gitlab_project.GitOpsAdministrator.id
+  title     = "GitOpsAdministrator-key"
+  key       = tls_private_key.main.public_key_openssh
+  read_only = true
 }
 
 resource "kubernetes_secret" "main" {

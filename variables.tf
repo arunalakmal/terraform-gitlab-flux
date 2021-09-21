@@ -1,11 +1,9 @@
 variable "gitlab_token" {
   description = "GitLab Token for the bootstrp generate it from GitLab console"
-  default = "NaN"
 }
 
 variable "target_path" {
   description = "Path of the cluster configuration"
-  default = "clusters/dev"
 }
 
 variable "branch" {
@@ -15,17 +13,14 @@ variable "branch" {
 
 variable "gitlab_repo_path" {
   description = "GitLab repository path this should be valid to find the repository"
-  default = "techcrumble"
 }
 
 variable "gitlab_project_id" {
   description = "GitLab repository ID, you can find it in the repository page at the top"
-  default = "25354313"
 }
 
 variable "gitops_administrator_repo" {
   description = "Name of the repository to be treated as the GitOps Administrator"
-  default = "techcrumble-gitops-administrator"
 }
 
 variable "kube_config_path" {

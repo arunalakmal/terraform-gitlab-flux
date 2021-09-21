@@ -1,12 +1,3 @@
-provider "flux" {}
-provider "kubectl" {}
-provider "kubernetes" {
-  config_path = var.kube_config_path
-}
-provider "gitlab" {
-  token = var.gitlab_token
-}
-
 locals {
   known_hosts  = "gitlab.com,172.65.251.78 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY="
   repo_ssh_url = "ssh://git@gitlab.com/${var.gitlab_repo_path}/${var.gitops_administrator_repo}"

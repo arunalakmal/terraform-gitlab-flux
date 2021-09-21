@@ -30,7 +30,7 @@ data "flux_install" "main" {
 
 data "flux_sync" "main" {
   target_path = var.target_path
-  url         = "https://gitlab.com/techcrumble/techcrumble-gitops-administrator"
+  url         = "ssh://git@gitlab.com/techcrumble/techcrumble-gitops-administrator"
   branch      = var.branch
 }
 

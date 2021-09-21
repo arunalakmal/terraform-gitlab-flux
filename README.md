@@ -9,7 +9,7 @@ Provide the below variables and use the modeule as below
 ```
 module "flux" {
   source  = "ArunaLakmal/flux/gitlab"
-  version = "1.0.0"
+  version = "1.0.2"
 
   gitlab_token = "xxxxxxx"
   target_path  = "cluster/path"
